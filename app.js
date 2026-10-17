@@ -1,20 +1,16 @@
-console.log("hello js");
+const express = require("express");
+const cors = require("cors");
+const todoRouter = require("./routes/todoRoutes");
 
+const app = express();
 
-//all get request 
-let xhr = new XMLHttpRequest();
-xhr.open("GET","http://localhost:3000/api/todos");
-xhr.send();
-xhr.onload = (res) => {
-    console.log(res);
-}
+app.use(express.json());
+app.use(cors({
+    origin: "http://127.0.0.1:5500",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
-//all get request
-fetch("http://localhost:3000/api/todos")
-.then(res => res.json())
-.then(data => console.log(data.data))
+app.use("/api/todos", todoRouter);
 
-//single get
-// fetch("http://localhost:3000/api/todos/1")
-// .then(res => res.json())
-// .then(data => console.log(data))
+module.exports = app;
